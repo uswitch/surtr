@@ -41,17 +41,17 @@ func main() {
 		log.Fatalf("error creating kube client: %s", err)
 	}
 
-	session, err := session.NewSession()
-	if err != nil {
-		log.Fatalf("failed to create AWS session: %s", err)
-	}
-
 	node, err := getNode(client, opts.olderThan)
 	if err != nil {
 		log.Fatalf("failed to get node: %s", err)
 	}
 	if node == "" {
 		log.Info("no nodes to terminate")
+	}
+
+	session, err := session.NewSession()
+	if err != nil {
+		log.Fatalf("failed to create AWS session: %s", err)
 	}
 
 	err = terminateNode(node, session)
