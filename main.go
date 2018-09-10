@@ -46,7 +46,8 @@ func main() {
 		log.Fatalf("failed to get node: %s", err)
 	}
 	if node == "" {
-		log.Info("no nodes to terminate")
+		log.Info("no nodes to terminate, shutting down")
+		os.Exit(0)
 	}
 
 	session, err := session.NewSession()
