@@ -3,7 +3,7 @@ apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: surtr
-  namespace: cloud
+  namespace: default
 spec:
   concurrencyPolicy: Forbid
   failedJobsHistoryLimit: 5
