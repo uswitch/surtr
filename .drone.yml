@@ -4,7 +4,9 @@ workspace:
 
 pipeline:
   build:
-    image: golang:1.10
+    image: golang:1.12
+    environment:
+      - GO111MODULE=on
     commands:
       - GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o bin/surtr
 
