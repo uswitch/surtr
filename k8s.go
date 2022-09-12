@@ -7,7 +7,7 @@ import (
 	"time"
 
 	log "github.com/sirupsen/logrus"
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
@@ -25,7 +25,7 @@ func getNode(ctx context.Context, client *kubernetes.Clientset, olderThan time.D
 	return oldestNode(nodes.Items, olderThan), nil
 }
 
-func oldestNode(nodes []v1.Node, olderThan time.Duration) string {
+func oldestNode(nodes []corev1.Node, olderThan time.Duration) string {
 
 	sortNodes(nodes)
 	for _, node := range nodes {
@@ -41,7 +41,7 @@ func oldestNode(nodes []v1.Node, olderThan time.Duration) string {
 
 }
 
-func sortNodes(nodes []v1.Node) {
+func sortNodes(nodes []corev1.Node) {
 	sort.Slice(nodes, func(i int, j int) bool {
 		return nodes[i].CreationTimestamp.Time.Before(nodes[j].CreationTimestamp.Time)
 	})
