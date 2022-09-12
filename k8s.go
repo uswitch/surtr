@@ -1,22 +1,23 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"sort"
 	"time"
 
 	log "github.com/sirupsen/logrus"
-	"k8s.io/api/core/v1"
+	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 )
 
-func getNode(client *kubernetes.Clientset, olderThan time.Duration) (string, error) {
+func getNode(ctx context.Context, client *kubernetes.Clientset, olderThan time.Duration) (string, error) {
 
 	nodeGetter := client.CoreV1().Nodes()
-	nodes, err := nodeGetter.List(metav1.ListOptions{})
+	nodes, err := nodeGetter.List(ctx, metav1.ListOptions{})
 
 	if err != nil {
 		return "", err

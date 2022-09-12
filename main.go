@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"os"
 	"time"
 
@@ -18,6 +19,7 @@ type options struct {
 }
 
 func main() {
+	ctx := context.Background()
 
 	opts := &options{}
 	kingpin.Flag("kubeconfig", "Path to kubeconfig.").StringVar(&opts.kubeconfig)
@@ -41,7 +43,7 @@ func main() {
 		log.Fatalf("error creating kube client: %s", err)
 	}
 
-	node, err := getNode(client, opts.olderThan)
+	node, err := getNode(ctx, client, opts.olderThan)
 	if err != nil {
 		log.Fatalf("failed to get node: %s", err)
 	}
