@@ -1,22 +1,23 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"sort"
 	"time"
 
 	log "github.com/sirupsen/logrus"
-	"k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 )
 
-func getNode(client *kubernetes.Clientset, olderThan time.Duration) (string, error) {
+func getNode(ctx context.Context, client *kubernetes.Clientset, olderThan time.Duration) (string, error) {
 
 	nodeGetter := client.CoreV1().Nodes()
-	nodes, err := nodeGetter.List(metav1.ListOptions{})
+	nodes, err := nodeGetter.List(ctx, metav1.ListOptions{})
 
 	if err != nil {
 		return "", err
@@ -24,7 +25,7 @@ func getNode(client *kubernetes.Clientset, olderThan time.Duration) (string, err
 	return oldestNode(nodes.Items, olderThan), nil
 }
 
-func oldestNode(nodes []v1.Node, olderThan time.Duration) string {
+func oldestNode(nodes []corev1.Node, olderThan time.Duration) string {
 
 	sortNodes(nodes)
 	for _, node := range nodes {
@@ -40,7 +41,7 @@ func oldestNode(nodes []v1.Node, olderThan time.Duration) string {
 
 }
 
-func sortNodes(nodes []v1.Node) {
+func sortNodes(nodes []corev1.Node) {
 	sort.Slice(nodes, func(i int, j int) bool {
 		return nodes[i].CreationTimestamp.Time.Before(nodes[j].CreationTimestamp.Time)
 	})
