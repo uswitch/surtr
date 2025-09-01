@@ -5,9 +5,9 @@ import (
 	"os"
 	"time"
 
+	kingpin "github.com/alecthomas/kingpin/v2"
 	"github.com/aws/aws-sdk-go/aws/session"
 	log "github.com/sirupsen/logrus"
-	kingpin "gopkg.in/alecthomas/kingpin.v2"
 
 	"k8s.io/client-go/kubernetes"
 )
